@@ -17,7 +17,7 @@ export const receive = async () => {
          durable: false, // true is when restart doesn't delete data.
       })
       //4
-      const { queue } = await chanel.assertQueue('', {
+      await chanel.assertQueue('', {
          exclusive: true,
       })
       //5. binding

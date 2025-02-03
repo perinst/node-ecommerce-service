@@ -14,7 +14,11 @@ import { BadRequestError, ConflictRequestError } from '../../../core/error.respo
 //
 
 //
-export const acquireLock = async (productId: string | Types.ObjectId, quantity: number, cartId: string) => {
+export const acquireLock = async (
+   productId: string | Types.ObjectId,
+   quantity: number,
+   cartId: string
+) => {
    const key = `lock_${productId}`
    const retryTime: number = 10
    const expireTime: number = 5000

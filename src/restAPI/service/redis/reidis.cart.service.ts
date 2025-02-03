@@ -7,13 +7,16 @@ class RedisCartService {
    protected cartRedis: Redis
    //
    constructor() {
-      this.cartRedis = new Redis()
+      //this.cartRedis = new Redis()
    }
    //
    public addToCart(cartId: string, productId: string | number, quantity: number): Promise<string> {
       return new Promise(async (resolve, reject) => {
          try {
-            const result = await this.cartRedis.hmset(`cart:${cartId}`, [`product:${productId}`, quantity])
+            const result = await this.cartRedis.hmset(`cart:${cartId}`, [
+               `product:${productId}`,
+               quantity,
+            ])
             if (!result) reject()
             resolve(result)
          } catch (error) {
@@ -48,3 +51,5 @@ class RedisCartService {
       })
    }
 }
+
+export default RedisCartService

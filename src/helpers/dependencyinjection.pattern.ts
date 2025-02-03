@@ -79,6 +79,10 @@ class OrderService {
    public async createOrder(userId: string | number, productId: string | number) {
       const email = await this.emailService.sendOrderConfirmation(userId, productId)
       const payment = await this.paymentService.processPayment(100, userId)
+      console.log({
+         email,
+         payment,
+      })
       // do something with email and payment process
    }
 }

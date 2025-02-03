@@ -1,52 +1,63 @@
-import Redis from 'ioredis'
+import Redis, { Redis as RedisClient } from 'ioredis'
 import dotenv from 'dotenv'
+
 dotenv.config()
-//
-//const port: number = process.env?.PORT_REDIS_CLOUD ? +process.env.PORT_REDIS_CLOUD : 11579
 
-// const redis = new Redis({
-//    host: process.env.HOST_REDIS_CLOUD,
-//    port,
-//    password: process.env.PASSWORD_REDIS_CLOUD,
-// })
-const redis = new Redis({ host: 'localhost', port: 6379 })
-//
-export const ConnectRedis = async () => {
-   //
-   redis.on('ready', () => {
-      console.log('Redis Ready!')
-   })
-   //
-   redis.on('error', (error) => {
-      console.log('Connect Redis Filed, ERROR:::', error)
-   })
+interface RedisConfig {
+   host: string
+   port: number
+   password?: string
 }
-//
-export default redis
-//
-// import { createClient } from 'redis'
-// import dotenv from 'dotenv'
 
-// dotenv.config()
-// //
-// const port: number = process.env?.PORT_REDIS_CLOUD ? +process.env.PORT_REDIS_CLOUD : 11579
-// //
-// const redisClient = createClient({
-//    password: process.env.PASSWORD_REDIS_CLOUD,
-//    socket: {
-//       host: process.env.HOST_REDIS_CLOUD,
-//       port,
-//    },
-// })
+class RedisConnection {
+   private static instance: RedisConnection
+   private client: RedisClient | null = null
+   private readonly config: RedisConfig
 
-// redisClient.on('error', (err) => console.log('Redis Client Error', err))
-// //
-// export const ConnectRedis = async () => {
-//    await redisClient.connect()
-// }
-// redisClient.on('connect', () => {
-//    console.log('Redis already!')
-// })
-// //
+   private constructor() {
+      this.config = {
+         host: process.env.REDIS_HOST || 'localhost',
+         port: Number(process.env.REDIS_PORT) || 6379,
+         password: process.env.REDIS_PASSWORD,
+      }
+   }
 
-// export default redisClient
+   public static getInstance(): RedisClient {
+      if (!RedisConnection.instance) {
+         RedisConnection.instance = new RedisConnection()
+      }
+      return RedisConnection.instance.getClient()
+   }
+
+   public async connect(): Promise<RedisClient> {
+      if (!this.client) {
+         this.client = new Redis(this.config)
+
+         this.client.on('ready', () => {
+            console.log('✅ Redis connection established')
+         })
+
+         this.client.on('error', (error) => {
+            console.error('❌ Redis connection error:', error)
+         })
+      }
+      return this.client
+   }
+
+   public getClient(): RedisClient {
+      if (!this.client) {
+         throw new Error('Redis client not initialized. Call connect() first.')
+      }
+      return this.client
+   }
+
+   public async disconnect(): Promise<void> {
+      if (this.client) {
+         await this.client.quit()
+         this.client = null
+      }
+   }
+}
+
+export const redisConnection = RedisConnection.getInstance()
+export default redisConnection
