@@ -1,3 +1,42 @@
-node_modules
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment variables
 .env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# Build output
+dist/
+build/
+out/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# Coverage directories
+coverage/
+.nyc_output/
+# IDE settings
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+#keys
 src/keys/
