@@ -4,11 +4,19 @@
    "description": "",
    "main": "index.js",
    "scripts": {
+      "start": "node dist/server.js",
+      "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/server.ts",
+      "build": "rimraf dist && npm run compile",
+      "build:watch": "tsc --watch",
+      "clean": "rimraf dist",
       "compile": "tsc",
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "watch": "tsc -w",
-      "start": " nodemon --exec node dist/server.js",
-      "dev": "nodemon --files --exec  ts-node src/server.ts"
+      "serve": "node -r dotenv/config dist/server.js",
+      "serve:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+      "serve:prod": "pm2 start dist/server.js --name pershop-service",
+      "test": "jest",
+      "test:watch": "jest --watch",
+      "lint": "eslint . --ext .ts",
+      "lint:fix": "eslint . --ext .ts --fix"
    },
    "keywords": [],
    "author": "",
