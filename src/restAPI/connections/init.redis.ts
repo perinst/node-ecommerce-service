@@ -22,11 +22,11 @@ class RedisConnection {
       }
    }
 
-   public static getInstance(): RedisClient {
+   public static getInstance(): RedisConnection {
       if (!RedisConnection.instance) {
          RedisConnection.instance = new RedisConnection()
       }
-      return RedisConnection.instance.getClient()
+      return RedisConnection.instance
    }
 
    public async connect(): Promise<RedisClient> {

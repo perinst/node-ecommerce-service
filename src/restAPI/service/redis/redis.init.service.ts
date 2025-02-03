@@ -24,7 +24,7 @@ export const acquireLock = async (
    const expireTime: number = 5000
    for (let i = 0; i < retryTime; i++) {
       //
-      const result = await redis.setnx(key, expireTime)
+      const result = await redis.getClient().setnx(key, expireTime)
       //
       if (!result) {
          await new Promise((resolve) => setTimeout(resolve, 50))
@@ -35,7 +35,7 @@ export const acquireLock = async (
       console.log('reservation::::', isReservation)
       //
       if (isReservation.modifiedCount && isReservation.acknowledged) {
-         await redis.expire(key, 100)
+         await redis.getClient().expire(key, 100)
          return key
       } else {
          throw new ConflictRequestError('Some Thing Wrong, Try Again!')
@@ -45,5 +45,5 @@ export const acquireLock = async (
 }
 //
 export const releaseLock = async (keyLock: string = '') => {
-   return await redis.del(keyLock)
+   return await redis.getClient().del(keyLock)
 }
