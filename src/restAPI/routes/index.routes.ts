@@ -3,7 +3,7 @@ import { ApiKey, Permission } from '../../auth/checkAuth'
 import { ROLES } from '../../utils/constant'
 const route = express.Router()
 
-route.get('/api/health', (req, res) => {
+route.get('/api/health', (_req, res) => {
    res.status(200).json({
       status: 'success',
       message: 'Server is running',
