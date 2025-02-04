@@ -10,8 +10,13 @@ services:
       - "3887:3888"
     environment:
       - PORT_REST_FULL=3887
-      - URL_MONGO_DATABASE_LOCAL=${URL_MONGO_DATABASE_LOCAL}
+      - URL_MONGO_DATABASE_LOCAL=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/pershop?authSource=admin
       - URL_SERVER=${URL_SERVER}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mongodb
+      - redis
     networks:
       - pershop_network
 
@@ -24,8 +29,13 @@ services:
       - "3888:3888"
     environment:
       - PORT_REST_FULL=3888
-      - URL_MONGO_DATABASE_LOCAL=${URL_MONGO_DATABASE_LOCAL}
+      - URL_MONGO_DATABASE_LOCAL=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/pershop?authSource=admin
       - URL_SERVER=${URL_SERVER}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mongodb
+      - redis
     networks:
       - pershop_network
 
@@ -38,8 +48,13 @@ services:
       - "3889:3888"
     environment:
       - PORT_REST_FULL=3889
-      - URL_MONGO_DATABASE_LOCAL=${URL_MONGO_DATABASE_LOCAL}
+      - URL_MONGO_DATABASE_LOCAL=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/pershop?authSource=admin
       - URL_SERVER=${URL_SERVER}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mongodb
+      - redis
     networks:
       - pershop_network
 
