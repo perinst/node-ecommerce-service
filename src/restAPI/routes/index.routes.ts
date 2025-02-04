@@ -2,6 +2,13 @@ import express from 'express'
 import { ApiKey, Permission } from '../../auth/checkAuth'
 import { ROLES } from '../../utils/constant'
 const route = express.Router()
+
+route.get('/api/health', (req, res) => {
+   res.status(200).json({
+      status: 'success',
+      message: 'Server is running',
+   })
+})
 //check API Key
 route.use(ApiKey)
 route.use('/v1/api/upload', require('./v1/upload.v1.routes'))
