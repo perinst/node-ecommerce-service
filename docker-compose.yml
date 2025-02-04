@@ -11,6 +11,8 @@ services:
         limits:
           cpu: '0.5'
           memory: 512M
+    expose:
+      - "${PORT_REST_FULL}"
     restart: unless-stopped
     environment:
       - NODE_ENV=production
