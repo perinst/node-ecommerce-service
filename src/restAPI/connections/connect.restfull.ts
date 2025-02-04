@@ -3,7 +3,7 @@ import route from '../routes/index.routes'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import { ErrorHandler, RequestError } from './handle.error'
-//import { ConnectRedis } from './init.redis'
+import redis from './init.redis'
 require('dotenv').config()
 //
 const app = express()
@@ -20,7 +20,8 @@ app.use(RequestError)
 //
 app.use(ErrorHandler)
 //
-//ConnectRedis()
+//ConnectRedis
+redis.connect()
 //
 const ConnectRestFull = async (PORT: number | string = 3888) => {
    app.listen(PORT, () => {
