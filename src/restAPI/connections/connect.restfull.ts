@@ -22,7 +22,7 @@ app.use(ErrorHandler)
 //
 //ConnectRedis()
 //
-const ConnectRestFull = async (PORT: number | string) => {
+const ConnectRestFull = async (PORT: number | string = 3888) => {
    app.listen(PORT, () => {
       try {
          console.log(`Server REST FULL running on: http://localhost:${PORT}`)
@@ -31,4 +31,5 @@ const ConnectRestFull = async (PORT: number | string) => {
       }
    })
 }
+
 export default ConnectRestFull
