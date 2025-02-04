@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpu: '0.5'
+          memory: 512M
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - URL_MONGO_DATABASE_LOCAL=${URL_MONGO_DATABASE_LOCAL}
+      - PORT_REST_FULL=${PORT_REST_FULL}
+      - URL_SERVER=${URL_SERVER}
+    volumes:
+      - api_logs:/app/src/app/logs
+    networks:
+      - pershop_networks
+    depends_on:
+      - redis
+      - mongodb
+
+  redis:
+    image: redis:alpine
+    container_name: pershop-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - pershop_network
+
+  mongodb:
+    image: mongo:latest
+    container_name: pershop-mongodb
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - pershop_network
+
+networks:
+  pershop_network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  redis_data:
+  api_logs:
